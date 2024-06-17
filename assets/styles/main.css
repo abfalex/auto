@@ -1,0 +1,35 @@
+body {
+    background-color: #111;
+    color: #fff;
+}
+
+.card {
+    background-color: #222;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.card img {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #fff;
+}
+
+.card-subtitle {
+    color: #7dff00;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 20px 0;
+    text-align: center;
+    background-color: #222;
+}
