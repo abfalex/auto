@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    background-color: #111;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(183, 183, 183);
+}
+
+.container {
+    font-family: "Roboto", sans-serif;
+    max-width: 800px;
+}
+
+.header {
+    font-family: "Roboto Slab", serif;
+    background: url('../images/background.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 4.5rem;
+    font-weight: 500;
+    color: #b7ff00
+}
+
+.header p {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #dedede;
+}
+
+.header p,
+.header h1 {
+    position: relative;
+    top: -60px;
+}
+
+.card {
+    background-color: #222;
+    border: none;
+    margin-bottom: 20px;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.card:hover .card-title {
+    color: #f75c6e;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    display: flex;
+    align-items: center;
+}
+
+.card img {
+    max-height: 200px;
+    object-fit: contain;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #fff;
+}
+
+.card-subtitle {
+    color: #7dff00;
+}
+
+.car-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.car-card img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.car-details {
+    flex-grow: 1;
+}
+
+.car-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.car-card:hover h5 {
+    color: #f75c6e;
+}
+
+.car-card:hover {
+    transform: scale(1.05);
+}

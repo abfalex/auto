@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
+    <title>Выбор авто — Главная</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="display-1">МАШИНЫ</h1>
+            <p clas="lead">ПОД ВАШ ВКУС</p>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="container my-4">
+            <h2 class="text-center mb-4">Поиск объявлений</h2>
+            <section class="row justify-content-center">
+                {% for mark in marks %}
+                <acricle class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-4">
+                                <a href="#{{ mark.id }}">
+                                    <img src="{{ mark.image_url }}" class="card-img" alt="Марка {{ mark.title }}">
+                                </a>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{{ mark.path_url }}">{{ mark.title }}</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </acricle>
+                {% endfor %}
+            </section>
+
+            {% for mark in marks %}
+            <section class="car-section mt-5" id="{{ mark.id }}">
+                <h2 class="text-center mb-4">{{ mark.title }}</h2>
+                <div class="row justify-content-center">
+                    {% for car in cars if car.mark_id == mark.id %}
+                    <article class="col-md-4 mb-3">
+                        <div class="car-card">
+                            <img src="{{ car.image_url }}" alt="Автомобиль {{ car.title }}" class="card-img-top">
+                            <div class="car-details">
+                                <h5>{{ car.model }}, {{ car.year }}</h5>
+                                <span>
+                                    {{ car.engine }}, {{ car.horsepower }} л.с., {{ car.fuel }},
+                                    {{ car.transmission }}, {{ car.drive }}{% if car.mileage %}, {{ car.mileage }}
+                                    км{%endif %}
+                                </span>
+                                <p class="car-price">{{ car.price }} ₽</p>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+
+</html>
