@@ -28,19 +28,20 @@ a {
     text-align: center;
 }
 
-.header h2 {
-    font-size: 4rem;
+.header h1 {
+    font-size: 4.5rem;
+    font-weight: 500;
     color: #b7ff00
 }
 
-.header h3 {
+.header p {
     font-size: 3.5rem;
     font-weight: 700;
     color: #dedede;
 }
 
-.header h2,
-.header h3 {
+.header p,
+.header h1 {
     position: relative;
     top: -60px;
 }
@@ -66,7 +67,6 @@ a {
 }
 
 .card img {
-    margin-top: 12px;
     max-height: 200px;
     object-fit: contain;
 }
@@ -78,4 +78,40 @@ a {
 
 .card-subtitle {
     color: #7dff00;
+}
+
+.car-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.car-card img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.car-details {
+    flex-grow: 1;
+}
+
+.car-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.car-card:hover h5 {
+    color: #f75c6e;
+}
+
+.car-card:hover {
+    transform: scale(1.05);
 }
