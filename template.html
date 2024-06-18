@@ -4,28 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
     <link rel="stylesheet" href="assets/styles/main.css">
-    <title>Выбор авто - Главная</title>
+    <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
+    <title>Выбор авто — Главная</title>
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="my-4">Объявления с автомобилями</h1>
-        <div class="row">
-            {% for car in cars %}
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{{ car.image_url }}" alt="Car {{ car.title }}" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ car.title }}</h5>
-                        <h6 class="card-subtitle mb-2">{{ car.price }}</h6>
+    <header class="header">
+        <h2>МАШИНЫ</h2>
+        <h3>ПОД ВАШ ВКУС</h3>
+    </header>
+    <main class="main-container">
+        <div class="container my-4">
+            <h1 class="text-center mb-4">Поиск объявлений</h1>
+            <div class="row">
+                {% for mark in marks %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-4">
+                                <a href="#{{ mark.id }}">
+                                    <img src="{{ mark.image_url }}" class="card-img" alt="Марка {{ mark.title }}">
+                                </a>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{{ mark.path_url }}">{{ mark.title }}</a></h5>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
+    </main>
 </body>
 
 </html>
