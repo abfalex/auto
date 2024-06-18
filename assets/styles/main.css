@@ -1,17 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 body {
     background-color: #111;
     color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(183, 183, 183);
+}
+
+.container {
+    font-family: "Roboto", sans-serif;
+    max-width: 800px;
+}
+
+.header {
+    font-family: "Roboto Slab", serif;
+    background: url('../images/background.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.header h2 {
+    font-size: 4rem;
+    color: #b7ff00
+}
+
+.header h3 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #dedede;
+}
+
+.header h2,
+.header h3 {
+    position: relative;
+    top: -60px;
 }
 
 .card {
     background-color: #222;
     border: none;
     margin-bottom: 20px;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.card:hover .card-title {
+    color: #f75c6e;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    display: flex;
+    align-items: center;
 }
 
 .card img {
+    margin-top: 12px;
     max-height: 200px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .card-title {
@@ -21,15 +78,4 @@ body {
 
 .card-subtitle {
     color: #7dff00;
-}
-
-.navbar {
-    margin-bottom: 20px;
-}
-
-footer {
-    margin-top: 20px;
-    padding: 20px 0;
-    text-align: center;
-    background-color: #222;
 }
