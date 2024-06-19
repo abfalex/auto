@@ -40,12 +40,16 @@ def save_brands_json(brands, folder=FOLDER):
 
 
 def find_cars_brand(soup):
-    brands = {}
+    brands = []
     soups = soup.select('[class="css-m7q1zs e4ojbx42"]')
     for soup in soups[:BRAND_COUNT]:
         image_url = soup.find('img')['src']
         brand_name = soup.find('a').text
-        brands[brand_name] = image_url
+        brand = {
+            'brand_name': brand_name,
+            'image_url': image_url
+        }
+        brands.append(brand)
     return brands
 
 
@@ -57,6 +61,7 @@ def parse_car_brand():
         print(f'Не существует такой ссылки - {response.url}')
     soup = BeautifulSoup(response.content, 'lxml')
     return find_cars_brand(soup)
+
 
 def main():
     brands = parse_car_brand()
