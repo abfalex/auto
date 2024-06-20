@@ -10,7 +10,10 @@ def on_reload():
 
     template = env.get_template("template.html")
 
-    rendered_page = template.render(marks="", cars="")
+    with open("cars.json", "r", encoding="UTF-8") as f:
+        cars = json.load(f)
+
+    rendered_page = template.render(brands=cars["marks"], cars=cars["cars"])
 
     with open("index.html", "w", encoding="UTF-8") as f:
         f.write(rendered_page)

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/styles/main.css">
+    <link rel="stylesheet" href="../../assets/styles/bootstrap.min.css">
+    <title>Car - 1</title>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4 mt-4">Поиск объявлений</h2>
+        <section class="car-section mt-5" id="{{ mark.id }}">
+            <h2 class="text-center mb-4">BMW, 2019</h2>
+            <div class="row justify-content-center">
+                <article class="col-md-4 mb-3">
+                    <div class="car-card">
+                        <img src="../../assets/images/mob1.jpg" alt="Автомобиль {{ car.title }}" class="card-img-top">
+                        <div class="car-details">
+                            <h5>BMW i5, 2007</h5>
+                            <span>
+                                3.0 л, 340 л.с., бензин,
+                                автомат, полный, 180 000
+                                км
+                            </span>
+                            <p class="car-price">3 500 000 ₽</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
