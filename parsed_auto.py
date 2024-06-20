@@ -31,10 +31,10 @@ def get_response(url):
     return response
 
 
-def save_brands_json(brands, folder=FOLDER):
+def save_brands_json(brands, filename=FILENAME, folder=FOLDER):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    filepath = join(folder, sanitize_filename(FILENAME))
+    filepath = join(folder, sanitize_filename(filename))
     with open(filepath, 'w', encoding='utf8') as file:
         json.dump(brands, file)
 
@@ -68,5 +68,10 @@ def main():
     save_brands_json(brands)
 
 
+<<<<<<< Updated upstream
 if __name__ == '__main__':
     main()
+=======
+if __name__ == '__main__': 
+    save_brands_json(parse_brand_cars('bmw', 3), 'cars_bwm.json')
+>>>>>>> Stashed changes
