@@ -128,6 +128,7 @@ def get_car(soup):
 
 
 def parse_brand_cars(brand, page_count):
+    """Возвращает список автомобилей определенного бренда"""
     cars = []
     for page in range(1, page_count+1):
         try:
@@ -189,6 +190,7 @@ def find_car_brands(soup, brand_names):
 
 
 def parse_car_brands(brand_names):
+    """Возвращает данные указанных брендов в виде списка"""
     url = 'https://auto.drom.ru/'
     try:
         response = get_response(url)
@@ -203,7 +205,7 @@ def main():
     save_brands_json(brands)
 
 
-<<<<<<< Updated upstream
+
 if __name__ == '__main__':
     # for brand in ['audi', 'bmw', 'chery', ]
     # pprint(parse_brand_cars('bmw', 3))
