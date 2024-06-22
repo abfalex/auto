@@ -8,10 +8,9 @@ import requests
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
 
- 
+
 FILENAME = 'brands.json'
 BRAND_NAMES = ['bmw', 'lexus', 'ford', 'mazda', 'chevrolet', 'mercedes-benz']
-FOLDER = ''
 
 
 def check_for_redirect(response):
@@ -161,10 +160,16 @@ def get_response(url):
             time.sleep(5)
 
 
-def save_brands_json(brands, filename=FILENAME, folder=FOLDER):
+def correct_filename(filename):
+    if filename[-5:] != '.json':
+        filename = filename + '.json'
+    return sanitize_filename(filename)
+
+
+def save_json(brands, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    filepath = join(folder, sanitize_filename(filename))
+    filepath = join(folder, correct_filename(filename))
     with open(filepath, 'w', encoding='utf8') as file:
         json.dump(brands, file)
 
@@ -201,12 +206,11 @@ def parse_car_brands(brand_names):
 
 
 def main():
-    brands = parse_car_brands()
-    save_brands_json(brands)
+    pass
 
 
 
 if __name__ == '__main__':
     # for brand in ['audi', 'bmw', 'chery', ]
     # pprint(parse_brand_cars('bmw', 3))
-    save_brands_json(parse_car_brands(BRAND_NAMES))
+    save_json(parse_car_brands(BRAND_NAMES), 'brands')
