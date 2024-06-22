@@ -21,10 +21,14 @@
                     {% for i in range(0, brands|length, 3) %}
                     <div class="row">
                         {% for brand in brands[i:i+3] %}
-                        <div class="col-md-4 mb-4">
-                            <a class="nav-link" href="#{{ brand.brand_name }}">
-                                <img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
-                                {{ brand.brand_name }}
+                        <div class="brand-card col-md-4 mb-3">
+                            <a class="brand-link" href="#{{ brand.brand_name }}">
+                                <div class="brand-image">
+                                    <img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
+                                </div>
+                                <div class="brand-name">
+                                    {{ brand.brand_name }}
+                                </div>
                             </a>
                         </div>
                         {% endfor %}
@@ -42,21 +46,7 @@
     </header>
 
     <main class="main-container">
-        <!-- <div class="container">
-            {% for i in range(0, brands|length, 3) %}
-            <div class="row">
-                {% for brand in brands[i:i+3] %}
-                <div class="col-md-4 mb-4">
-                    <a class="nav-link" href="#{{ brand.brand_name }}">
-                        <img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
-                        {{ brand.brand_name }}
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-            {% endfor %}
-        </div> -->
-        <h2 class="text-center mb-4 mt-4">Поиск объявлений</h2>
+        <h2 class="text-center title">Поиск объявлений</h2>
         {% for brand in brands %}
         <section class="car-section mt-5 container">
             <h2 class="text-center mb-4">{{ brand.brand_name }}</h2>
@@ -78,6 +68,30 @@
         </section>
         {% endfor %}
     </main>
+
+    <hr>
+    <footer class="footer-container text-center text-lg-start bg-body-tertiary text-muted">
+        <section>
+            <div class="container text-center text-md-start mt-5">
+                <div class="row mt-3">
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-4">Контакты</h6>
+                        <p><i class="fas fa-enlope me-3">
+                                auto@example.com
+                            </i></p>
+                        <p><i class="fas me-3">
+                                +7 (000) 000 00-00
+                            </i></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="text-center p-4">
+            &copy; 2024 Auto
+        </div>
+    </footer>
+
+    <script src="assets/scripts/bootstrap.min.js"></script>
 </body>
 
 </html>
