@@ -8,9 +8,9 @@ import requests
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
 
-
-BRAND_COUNT = 6
+ 
 FILENAME = 'brands.json'
+BRAND_NAMES = ['bmw', 'lexus', 'ford', 'mazda', 'chevrolet', 'mercedes-benz']
 FOLDER = ''
 
 
@@ -168,35 +168,43 @@ def save_brands_json(brands, filename=FILENAME, folder=FOLDER):
         json.dump(brands, file)
 
 
-def find_cars_brand(soup):
+def lower_list(data):
+    data = map(lambda x: x.lower(), data)
+    return (list(data))
+
+
+def find_car_brands(soup, brand_names):
     brands = []
     soups = soup.select('[class="css-m7q1zs e4ojbx42"]')
-    for soup in soups[:BRAND_COUNT]:
+    for soup in soups:
         image_url = soup.find('img')['src']
         brand_name = soup.find('a').text
-        brand = {
-            'brand_name': brand_name,
-            'image_url': image_url
-        }
-        brands.append(brand)
+        if brand_name.lower() in lower_list(brand_names):
+            brand = {
+                'brand_name': brand_name,
+                'image_url': image_url
+            }
+            brands.append(brand)
     return brands
 
 
-def parse_car_brand():
+def parse_car_brands(brand_names):
     url = 'https://auto.drom.ru/'
     try:
         response = get_response(url)
         soup = BeautifulSoup(response.content, 'lxml')
-        return find_cars_brand(soup)
+        return find_car_brands(soup, brand_names)
     except requests.exceptions.HTTPError:
         print('Не существует такой ссылки.')
 
 
 def main():
-    brands = parse_car_brand()
+    brands = parse_car_brands()
     save_brands_json(brands)
 
 
 <<<<<<< Updated upstream
 if __name__ == '__main__':
-    pprint(parse_brand_cars('bmw', 3))
+    # for brand in ['audi', 'bmw', 'chery', ]
+    # pprint(parse_brand_cars('bmw', 3))
+    save_brands_json(parse_car_brands(BRAND_NAMES))
