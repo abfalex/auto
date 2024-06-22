@@ -74,6 +74,8 @@ def find_power(soup):
         return int(text[:-5])
     except ValueError:
         return None
+    except AttributeError:
+        return None
 
 
 def find_year(soup):
@@ -171,7 +173,7 @@ def save_json(brands, filename, folder=''):
         os.makedirs(folder, exist_ok=True)
     filepath = join(folder, correct_filename(filename))
     with open(filepath, 'w', encoding='utf8') as file:
-        json.dump(brands, file)
+        json.dump(brands, file, ensure_ascii=False)
 
 
 def lower_list(data):
@@ -209,8 +211,6 @@ def main():
     pass
 
 
-
 if __name__ == '__main__':
-    # for brand in ['audi', 'bmw', 'chery', ]
-    # pprint(parse_brand_cars('bmw', 3))
-    save_json(parse_car_brands(BRAND_NAMES), 'brands')
+    for brand in BRAND_NAMES:
+        save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
