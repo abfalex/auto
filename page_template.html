@@ -14,14 +14,23 @@
     <header class="header">
         <div class="navbar">
             <div class="logo">
-                <img src="assets/images/favicon.png" alt="logo" class="img-fluid">
+                <a href="index.html"><img src="assets/images/favicon.png" alt="logo" class="img-fluid"></a>
             </div>
             <nav class="nav-list">
-                {% for brand in brands %}
-                <a class="nav-link" href="#{{ brand.brand_name }}">
-                    <img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
-                    {{ brand.brand_name }}</a>
-                {% endfor %}
+                <div class="container">
+                    {% for i in range(0, brands|length, 3) %}
+                    <div class="row">
+                        {% for brand in brands[i:i+3] %}
+                        <div class="col-md-4 mb-4">
+                            <a class="nav-link" href="#{{ brand.brand_name }}">
+                                <img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
+                                {{ brand.brand_name }}
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
             </nav>
             <a href="#contacts" class="contacts-link">Контакты</a>
         </div>
@@ -33,32 +42,27 @@
     </header>
 
     <main class="main-container">
-        <div class="container">
-            <h2 class="text-center mb-4 mt-4">Поиск объявлений</h2>
-            {% for mark in marks %}
-            <section class="car-section mt-5" id="{{ mark.id }}">
-                <h2 class="text-center mb-4">{{ mark.title }}</h2>
-                <div class="row justify-content-center">
-                    {% for car in cars if car.mark_id == mark.id %}
-                    <article class="col-md-4 mb-3">
-                        <div class="car-card">
-                            <img src="{{ car.image_url }}" alt="Автомобиль {{ car.title }}" class="card-img-top">
-                            <div class="car-details">
-                                <h5>{{ car.model }}, {{ car.year }}</h5>
-                                <span>
-                                    {{ car.engine }}, {{ car.horsepower }} л.с., {{ car.fuel }},
-                                    {{ car.transmission }}, {{ car.drive }}{% if car.mileage %}, {{ car.mileage }}
-                                    км{%endif %}
-                                </span>
-                                <p class="car-price">{{ car.price }} ₽</p>
-                            </div>
+        <h2 class="text-center mb-4 mt-4">Поиск объявлений</h2>
+        {% for brand in brands %}
+        <section class="car-section mt-5 container">
+            <h2 class="text-center mb-4">{{ brand.brand_name }}</h2>
+            {% for i in range(0, cars|length, 3) %}
+            <div class="card-articles row">
+                {% for car in cars[i:i+3] %}
+                <article class="card-article col-md-4">
+                    <div class="car-card">
+                        <img src="{{ car.image_url }}" alt="Автомобиль {{ car.title }}" class="car-preview">
+                        <div class="car-details">
+                            <h5>{{ car.model }}, {{ car.year }}</h5>
+                            <p class="car-price">{{ car.price }} ₽</p>
                         </div>
-                    </article>
-                    {% endfor %}
-                </div>
-            </section>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
             {% endfor %}
-        </div>
+        </section>
+        {% endfor %}
     </main>
 </body>
 
