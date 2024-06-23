@@ -46,15 +46,15 @@
         {% for brand in brands %}
         <section class="car-section mt-5 container">
             <h2 class="text-center mb-4">{{ brand.brand_name }}</h2>
-            {% for i in range(0, cars|length, 3) %}
+            {% for i in range(0, automobiles|length, 3) %}
             <div class="card-articles row">
-                {% for car in cars[i:i+3] %}
+                {% for title, year, drive, price, brand in automobile[i:i+3] %}
                 <article class="card-article col-md-4">
                     <div class="car-card">
-                        <img src="{{ car.image_url }}" alt="Автомобиль {{ car.title }}" class="car-preview">
+                        <img src="{{ car.image_url }}" alt="Автомобиль {{ brand }}" class="car-preview">
                         <div class="car-details">
-                            <h5>{{ car.model }}, {{ car.year }}</h5>
-                            <p class="car-price">{{ car.price }} ₽</p>
+                            <h5>{{ model }}, {{ year }}</h5>
+                            <p class="car-price">{{ price }} ₽</p>
                         </div>
                     </div>
                 </article>
