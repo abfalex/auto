@@ -23,18 +23,28 @@ def on_reload():
 
     for index, brand in enumerate(brands, start=1):
         brand_folder = f"{brand['brand_name']}"
-        page_filename = f"page{index}.html"
-        page_output_path = os.path.join(brands_folder, brand_folder, page_filename)
         os.makedirs(f"{brands_folder}/{brand_folder}", exist_ok=True)
-        for automobile in automobiles:
+
+        for auto_index, automobile in enumerate(automobiles, start=1):
+            if automobile["brand"] != brand["brand_name"]:
+                continue
+            print(automobile)
+
+            page_filename = f"page{auto_index}.html"
+            page_output_path = os.path.join(brands_folder, brand_folder, page_filename)
             rendered_car_page = page_template.render(
-                brand=brand, automobiles=automobiles
+                brand=brand, automobile=automobile, page_number=index
             )
 
             with open(page_output_path, "w", encoding="UTF-8") as f:
                 f.write(rendered_car_page)
 
-    rendered_page = main_template.render(brands=brands)
+            rendered_page = main_template.render(
+                brands=brands,
+                page_number=index,
+                automobiles=automobiles,
+                total_pages=len(brands),
+            )
 
     with open("index.html", "w", encoding="UTF-8") as f:
         f.write(rendered_page)
