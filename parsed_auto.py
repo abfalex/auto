@@ -138,7 +138,7 @@ def parse_brand_cars(brand, page_count):
             soup = BeautifulSoup(response.content, 'lxml')
             cars = cars + find_cars(soup)
         except requests.exceptions.HTTPError:
-            print('Не существует такой ссылки')
+            print(f'Не существует такой ссылки - {url}')
     return cars
 
 
@@ -162,18 +162,43 @@ def get_response(url):
             time.sleep(5)
 
 
-def correct_filename(filename):
+def correct_json_filename(filename):
     if filename[-5:] != '.json':
         filename = filename + '.json'
+    return sanitize_filename(filename)
+
+
+def correct_img_filename(filename):
+    if filename[-4:] != '.jpg':
+        filename = filename + '.jpg'
     return sanitize_filename(filename)
 
 
 def save_json(brands, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    filepath = join(folder, correct_filename(filename))
+    filepath = join(folder, correct_json_filename(filename))
     with open(filepath, 'w', encoding='utf8') as file:
         json.dump(brands, file, ensure_ascii=False)
+
+
+def save_image(content, filename, folder=''):
+    if folder:
+        os.makedirs(folder, exist_ok=True)
+    filepath = join(folder, correct_img_filename(filename))
+    with open(filepath, 'wb') as file:
+        file.write(content)
+    return filepath
+
+
+def download_image(url, filename, folder=''):
+    """Скачивает изображение и сохраняет по указанному пути"""
+    try:
+        response = get_response(url)
+        return save_image(response.content, filename, folder)
+    except requests.exceptions.HTTPError:
+        print(f'Не существует такой ссылки - {url}')
+        return None
 
 
 def lower_list(data):
@@ -204,7 +229,7 @@ def parse_car_brands(brand_names):
         soup = BeautifulSoup(response.content, 'lxml')
         return find_car_brands(soup, brand_names)
     except requests.exceptions.HTTPError:
-        print('Не существует такой ссылки.')
+        print(f'Не существует такой ссылки - {url}')
 
 
 def main():
