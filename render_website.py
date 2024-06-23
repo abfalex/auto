@@ -25,6 +25,7 @@ def on_reload():
         brands = json.load(f)
 
     cars_on_page = 20
+    all_automobiles = {}
 
     for brand_number, brand in enumerate(brands, start=1):
         brand_folder_name = f"{brand['brand_name']}"
@@ -39,9 +40,12 @@ def on_reload():
                 automobiles = json.load(f)
                 auto_on_page = automobiles[0:cars_on_page]
 
-            page_number = list(chunked(automobiles, 20))
-            for page_number, automobiles in enumerate(page_number, start=1):
+                if brand["brand_name"] not in all_automobiles:
+                    all_automobiles[brand["brand_name"]] = []
+                all_automobiles[brand["brand_name"]].extend(auto_on_page)
 
+            page_chucks = list(chunked(automobiles, 20))
+            for page_number, automobiles in enumerate(page_chucks, start=1):
                 page_filename = f"page{page_number}.html"
                 page_output_path = os.path.join(brand_page_path, page_filename)
 
@@ -55,12 +59,12 @@ def on_reload():
                 with open(page_output_path, "w", encoding="UTF-8") as f:
                     f.write(rendered_car_page)
 
-                rendered_page = main_template.render(
-                    brands=brands,
-                    page_number=brand_number,
-                    automobiles=auto_on_page,
-                    total_pages=len(brands),
-                )
+    rendered_page = main_template.render(
+        brands=brands,
+        page_number=brand_number,
+        automobiles=all_automobiles,
+        total_pages=len(brands),
+    )
 
     with open("index.html", "w", encoding="UTF-8") as f:
         f.write(rendered_page)
