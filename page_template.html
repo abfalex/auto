@@ -1,69 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base_template.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/styles/main.css">
-    <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
-    <title>Выбор авто — Главная</title>
-</head>
+{% block title %}
+Выбор авто — {{ brand.brand_name }}
+{% endblock %}
 
-<body>
-    <header class="header">
-        <div class="navbar">
-            <div class="logo">
-                <a href="index.html"><img src="assets/images/favicon.png" alt="logo" class="img-fluid"></a>
-            </div>
-            <nav class="nav-list">
-                <div class="container">
-                    {% for i in range(0, brands|length, 3) %}
-                    <div class="row">
-                        {% for brand in brands[i:i+3] %}
-                        <div class="col-md-4 mb-4">
-                            <a class="nav-link" href="#{{ brand.brand_name }}">
-                                <img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
-                                {{ brand.brand_name }}
-                            </a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </nav>
-            <a href="#contacts" class="contacts-link">Контакты</a>
-        </div>
-        <div class="container d-flex flex-column justify-content-center align-items-center text-center text-white"
-            style="height: 100vh;">
-            <h1>МАШИНЫ</h1>
-            <h2>ПОД ВАШ ВКУС</h2>
-        </div>
-    </header>
-
-    <main class="main-container">
-        <h2 class="text-center mb-4 mt-4">Поиск объявлений</h2>
-        {% for brand in brands %}
-        <section class="car-section mt-5 container">
-            <h2 class="text-center mb-4">{{ brand.brand_name }}</h2>
-            {% for i in range(0, automobiles|length, 3) %}
-            <div class="card-articles row">
-                {% for title, year, drive, price, brand in automobile[i:i+3] %}
-                <article class="card-article col-md-4">
-                    <div class="car-card">
-                        <img src="{{ car.image_url }}" alt="Автомобиль {{ brand }}" class="car-preview">
-                        <div class="car-details">
-                            <h5>{{ model }}, {{ year }}</h5>
-                            <p class="car-price">{{ price }} ₽</p>
-                        </div>
-                    </div>
-                </article>
-                {% endfor %}
-            </div>
-            {% endfor %}
-        </section>
-        {% endfor %}
-    </main>
-</body>
-
-</html>
+{% block main %}
+<main class="main-container">
+	<h2 class="text-center mb-4 mt-4">Поиск объявлений</h2>
+	<section class="car-section mt-5 container">
+		<h2 class="text-center mb-4" id="ads">{{ brand.brand_name }}</h2>
+		{% for i in range(0, automobiles|length, 2) %}
+		<div class="card-articles row">
+			{% for automobile in automobiles[i:i+2] %}
+			<article class="card-article col-md-6">
+				<div class="car-card">
+					<div class="card-image">
+						<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
+					</div>
+					<div class="car-details">
+						<p class="car-price">{{ automobile.price|format_price }} ₽</p>
+						<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
+						<div class="car-description">
+							<span class="description-item">{{ automobile.engine.capacity }} л, </span>
+							<span class="description-item">{{ automobile.engine.fuel }}, </span>
+							<span class="description-item">{{ automobile.power }} л.с., </span>
+							<span class="description-item">{{ automobile.transmission }}, </span>
+							<span class="description-item">{{ automobile.wheel_drive }}{% if
+								automobile.mileage %}, </span>
+							<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
+						</div>
+					</div>
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+		{% endfor %}
+	</section>
+</main>
+{% endblock main %}
