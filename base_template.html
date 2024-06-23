@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/styles/main.css">
+	<link rel="stylesheet" href="./../../assets/styles/bootstrap.min.css">
+	<link rel="shortcut icon" href="./../../assets/images/favicon.png" type="image/x-icon">
+	<title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+	<header class="header">
+		<div class="navbar">
+			<div class="logo">
+				<a href="./../../index.html"><img src="./../../assets/images/favicon.png" alt="logo"
+						class="img-fluid"></a>
+			</div>
+			<nav class="nav-list">
+				<div class="container">
+					{% for i in range(0, brands|length, 3) %}
+					<div class="row">
+						{% for brand in brands[i:i+3] %}
+						<div class="brand-card col-md-4 mb-3">
+							<a class="brand-link" href="./../../pages/{{ brand.brand_name }}/page1.html">
+								<div class="brand-image">
+									<img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
+								</div>
+								<div class="brand-name">
+									{{ brand.brand_name }}
+								</div>
+							</a>
+						</div>
+						{% endfor %}
+					</div>
+					{% endfor %}
+				</div>
+			</nav>
+			<a href="#contacts" class="contacts-link">Контакты</a>
+		</div>
+		<div class="container d-flex flex-column justify-content-center align-items-center text-center text-white"
+			style="height: 100vh;">
+			<h1>МАШИНЫ</h1>
+			<h2>ПОД ВАШ ВКУС</h2>
+		</div>
+	</header>
+
+	{% block main %}
+	{% endblock %}
+
+	<footer class="footer-container text-center text-lg-start bg-body-tertiary text-muted">
+		<section>
+			<div class="container text-center text-md-start mt-5">
+				<div class="row mt-3">
+					<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+						<h6 class="text-uppercase fw-bold mb-4">Контакты</h6>
+						<p>auto@example.com</p>
+						<p>+7 904 000 00-00</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="text-center p-4">
+			&copy; 2024 Auto
+		</div>
+	</footer>
+</body>
+
+</html>
