@@ -9,9 +9,8 @@ from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
 
 
-BRAND_COUNT = 6
 FILENAME = 'brands.json'
-FOLDER = ''
+BRAND_NAMES = ['bmw', 'lexus', 'ford', 'mazda', 'chevrolet', 'mercedes-benz']
 
 
 def check_for_redirect(response):
@@ -75,6 +74,8 @@ def find_power(soup):
         return int(text[:-5])
     except ValueError:
         return None
+    except AttributeError:
+        return None
 
 
 def find_year(soup):
@@ -128,6 +129,7 @@ def get_car(soup):
 
 
 def parse_brand_cars(brand, page_count):
+    """Возвращает список автомобилей определенного бренда"""
     cars = []
     for page in range(1, page_count+1):
         try:
@@ -160,42 +162,55 @@ def get_response(url):
             time.sleep(5)
 
 
-def save_brands_json(brands, folder=FOLDER):
+def correct_filename(filename):
+    if filename[-5:] != '.json':
+        filename = filename + '.json'
+    return sanitize_filename(filename)
+
+
+def save_json(brands, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    filepath = join(folder, sanitize_filename(FILENAME))
+    filepath = join(folder, correct_filename(filename))
     with open(filepath, 'w', encoding='utf8') as file:
-        json.dump(brands, file)
+        json.dump(brands, file, ensure_ascii=False)
 
 
-def find_cars_brand(soup):
+def lower_list(data):
+    data = map(lambda x: x.lower(), data)
+    return (list(data))
+
+
+def find_car_brands(soup, brand_names):
     brands = []
     soups = soup.select('[class="css-m7q1zs e4ojbx42"]')
-    for soup in soups[:BRAND_COUNT]:
+    for soup in soups:
         image_url = soup.find('img')['src']
         brand_name = soup.find('a').text
-        brand = {
-            'brand_name': brand_name,
-            'image_url': image_url
-        }
-        brands.append(brand)
+        if brand_name.lower() in lower_list(brand_names):
+            brand = {
+                'brand_name': brand_name,
+                'image_url': image_url
+            }
+            brands.append(brand)
     return brands
 
 
-def parse_car_brand():
+def parse_car_brands(brand_names):
+    """Возвращает данные указанных брендов в виде списка"""
     url = 'https://auto.drom.ru/'
     try:
         response = get_response(url)
         soup = BeautifulSoup(response.content, 'lxml')
-        return find_cars_brand(soup)
+        return find_car_brands(soup, brand_names)
     except requests.exceptions.HTTPError:
         print('Не существует такой ссылки.')
 
 
 def main():
-    brands = parse_car_brand()
-    save_brands_json(brands)
+    pass
 
 
 if __name__ == '__main__':
-    pprint(parse_brand_cars('bmw', 3))
+    for brand in BRAND_NAMES:
+        save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
