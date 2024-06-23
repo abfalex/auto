@@ -8,9 +8,10 @@
 	{% for brand in brands %}
 	<section class="car-section mt-5 container">
 		<h2 class="ad-car-name text-center mb-4">{{ brand.brand_name }}</h2>
-		{% for i in range(0, automobiles|length, 2) %}
+		{% set brand_automobiles = automobiles[brand.brand_name] %}
+		{% for i in range(0, brand_automobiles|length, 2) %}
 		<div class="card-articles row">
-			{% for automobile in automobiles[i:i+2] %}
+			{% for automobile in brand_automobiles[i:i+2] %}
 			<article class="card-article col-md-6">
 				<div class="car-card">
 					<div class="card-image">
