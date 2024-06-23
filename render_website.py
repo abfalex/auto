@@ -53,7 +53,8 @@ def on_reload():
                     brands=brands,
                     brand=brand,
                     automobiles=automobiles,
-                    page_number=brand_number,
+                    page_number=page_number,
+                    total_pages=len(page_chucks),
                 )
 
                 with open(page_output_path, "w", encoding="UTF-8") as f:
