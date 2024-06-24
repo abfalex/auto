@@ -14,22 +14,24 @@
 			{% for automobile in automobiles[i:i+2] %}
 			<article class="card-article col-md-6">
 				<div class="car-card">
-					<div class="card-image">
-						<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
-					</div>
-					<div class="car-details">
-						<p class="car-price">{{ automobile.price|format_price }} ₽</p>
-						<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
-						<div class="car-description">
-							<span class="description-item">{{ automobile.engine.capacity }} л, </span>
-							<span class="description-item">{{ automobile.engine.fuel }}, </span>
-							<span class="description-item">{{ automobile.power }} л.с., </span>
-							<span class="description-item">{{ automobile.transmission }}, </span>
-							<span class="description-item">{{ automobile.wheel_drive }}{% if
-								automobile.mileage %}, </span>
-							<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
+					<a href="{{ automobile.drom_url }}" target="_blank" class="drom-link">
+						<div class="card-image">
+							<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
 						</div>
-					</div>
+						<div class="car-details">
+							<p class="car-price">{{ automobile.price|format_price }} ₽</p>
+							<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
+							<div class="car-description">
+								<span class="description-item">{{ automobile.engine.fuel }}, </span>
+								<span class="description-item">{{ automobile.engine.capacity }} л, </span>
+								<span class="description-item">{{ automobile.power }} л.с., </span>
+								<span class="description-item">{{ automobile.transmission }}, </span>
+								<span class="description-item">{{ automobile.wheel_drive }}{% if
+									automobile.mileage %}, </span>
+								<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
+							</div>
+						</div>
+					</a>
 				</div>
 			</article>
 			{% endfor %}
@@ -40,12 +42,26 @@
 				{% if page_number > 1 %}
 				<li class="page-item">
 					<a class="page-link" href="./../../pages/{{ brand.brand_name }}/page{{ page_number - 1 }}.html#ads"
-						tabindex="-1" aria-disabled="true">Предыдущая</a>
+						tabindex="-1" aria-disabled="true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16"
+							class="arrow enabled previous">
+							<path fill="currentColor"
+								d="M.293 14.293a1 1 0 0 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 .293 1.707L6.586 8 .293 14.293z">
+							</path>
+						</svg>
+					</a>
 				</li>
 				{% else %}
 				<li class="page-item disabled">
 					<a class="page-link" href="./../../pages/{{ brand.brand_name }}/page{{ page_number - 1 }}.html#ads"
-						tabindex="-1" aria-disabled="true">Предыдущая</a>
+						tabindex="-1" aria-disabled="true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16"
+							class="arrow disabled previous">
+							<path fill="currentColor"
+								d="M.293 14.293a1 1 0 0 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 .293 1.707L6.586 8 .293 14.293z">
+							</path>
+						</svg>
+					</a>
 				</li>
 				{% endif %}
 				{% for num in range(1, total_pages + 1) %}
@@ -54,18 +70,27 @@
 					<a class="page-link" href="./../../pages/{{ brand.brand_name }}/page{{ num }}.html#ads">{{num}}</a>
 				</li>
 				{% else %}
-				<li class="page-item"><a class="page-link"
-						href="./../../pages/{{ brand.brand_name }}/page{{ num }}.html#ads">{{ num }}</a></li>
+				<li class="page-item"><a class="page-link" href="./../../pages/{{ brand.brand_name }}/page{{ num }}.html#ads">{{
+						num }}</a></li>
 				{% endif %}
 				{% endfor %}
 				{% if page_number < total_pages %} <li class="page-item">
-					<a class="page-link"
-						href="./../../pages/{{ brand.brand_name }}/page{{ page_number + 1 }}.html#ads">Следующая</a>
+					<a class="page-link" href="./../../pages/{{ brand.brand_name }}/page{{ page_number + 1 }}.html#ads">
+						<svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" class="arrow enabled">
+							<path fill="currentColor"
+								d="M.293 14.293a1 1 0 0 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 .293 1.707L6.586 8 .293 14.293z">
+							</path>
+						</svg></a>
 					</li>
 					{% else %}
 					<li class="page-item disabled">
-						<a class="page-link"
-							href="./../../pages/{{ brand.brand_name }}/page{{ page_number + 1 }}.html#ads">Следующая</a>
+						<a class="page-link" href="./../../pages/{{ brand.brand_name }}/page{{ page_number + 1 }}.html#ads">
+							<svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" class="arrow disabled">
+								<path fill="currentColor"
+									d="M.293 14.293a1 1 0 0 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 .293 1.707L6.586 8 .293 14.293z">
+								</path>
+							</svg>
+						</a>
 					</li>
 					{% endif %}
 			</ul>
