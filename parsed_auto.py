@@ -106,9 +106,9 @@ def find_model(soup):
 
 
 def make_url(page, brand):
-    url = f'https://auto.drom.ru/{brand}/all/page{page}/?ph=1&unsold=1'
+    url = f'https://auto.drom.ru/{brand}/all/page{page}/?'
     if page == 1:
-        url = f'https://auto.drom.ru/{brand}/all/?ph=1&unsold=1'
+        url = f'https://auto.drom.ru/{brand}/all/?'
     return url
 
 
@@ -131,10 +131,11 @@ def get_car(soup):
 def parse_brand_cars(brand, page_count):
     """Возвращает список автомобилей определенного бренда"""
     cars = []
+    params = {'ph': True, 'unsold': True}
     for page in range(1, page_count+1):
         try:
             url = make_url(page, brand)
-            response = get_response(url)
+            response = get_response(url, params=params)
             soup = BeautifulSoup(response.content, 'lxml')
             cars = cars + find_cars(soup)
         except requests.exceptions.HTTPError:
@@ -150,10 +151,10 @@ def find_cars(page_soup):
     return cars
 
 
-def get_response(url):
+def get_response(url, params={}):
     while True:
         try:
-            response = requests.get(url)
+            response = requests.get(url, params=params)
             response.raise_for_status()
             check_for_redirect(response)
             return response
