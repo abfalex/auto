@@ -14,22 +14,24 @@
 			{% for automobile in brand_automobiles[i:i+2] %}
 			<article class="card-article col-md-6">
 				<div class="car-card">
-					<div class="card-image">
-						<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
-					</div>
-					<div class="car-details">
-						<p class="car-price">{{ automobile.price|format_price }} ₽</p>
-						<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
-						<div class="car-description">
-							<span class="description-item">{{ automobile.engine.capacity }} л, </span>
-							<span class="description-item">{{ automobile.engine.fuel }}, </span>
-							<span class="description-item">{{ automobile.power }} л.с., </span>
-							<span class="description-item">{{ automobile.transmission }}, </span>
-							<span class="description-item">{{ automobile.wheel_drive }}{% if
-								automobile.mileage %}, </span>
-							<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
+					<a href="{{ automobile.drom_url }}" target="_blank" class="drom-link">
+						<div class="card-image">
+							<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
 						</div>
-					</div>
+						<div class="car-details">
+							<p class="car-price">{{ automobile.price|format_price }} ₽</p>
+							<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
+							<div class="car-description">
+								<span class="description-item">{{ automobile.engine.fuel }}, </span>
+								<span class="description-item">{{ automobile.engine.capacity }} л, </span>
+								<span class="description-item">{{ automobile.power }} л.с., </span>
+								<span class="description-item">{{ automobile.transmission }}, </span>
+								<span class="description-item">{{ automobile.wheel_drive }}{% if
+									automobile.mileage %}, </span>
+								<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
+							</div>
+						</div>
+					</a>
 				</div>
 			</article>
 			{% endfor %}
