@@ -53,10 +53,14 @@ def find_capacity(soup):
 
 
 def find_wheel_drive(soup):
-    text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text
-    if text[-1] == ',':
-        return soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text[:-1]
-    return text
+    try:
+        text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text
+        if text[-1] == ',':
+            return soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text[:-1]
+        return text
+    except IndexError:
+        print(soup.prettify())
+        return None
 
 
 def find_transmission(soup):
@@ -97,12 +101,18 @@ def find_price(soup):
 
 def find_img_url(soup):
     text = soup.select_one('[class="css-1jfqfiu e1e9ee560"]')
+    if not text:
+        return None
     return text.find('img')['src']
 
 
 def find_model(soup):
-    text = soup.select_one('[class="css-16kqa8y e3f4v4l2"]').text
-    return text.split(',')[0]
+    try:
+        text = soup.select_one('[class="css-16kqa8y e3f4v4l2"]').text
+        return text.split(',')[0]
+    except AttributeError:
+        print(soup.prettify())
+        return None
 
 
 def make_url(page, brand):
@@ -131,7 +141,7 @@ def get_car(soup):
 def parse_brand_cars(brand, page_count):
     """Возвращает список автомобилей определенного бренда"""
     cars = []
-    params = {'ph': True, 'unsold': True}
+    params = {'ph': 1, 'unsold': 1}
     for page in range(1, page_count+1):
         try:
             url = make_url(page, brand)
@@ -238,5 +248,10 @@ def main():
 
 
 if __name__ == '__main__':
-    for brand in BRAND_NAMES:
-        save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
+    # for brand in BRAND_NAMES:
+    #     save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
+    a = []
+    for car in parse_brand_cars('bmw', 10):
+        if car['wheel_drive'] not in a:
+            a.append(car['wheel_drive'])
+    print(a)
