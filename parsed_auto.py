@@ -1,8 +1,11 @@
 import time
 import json
 import os
+from os.path import split
 from os.path import join
-from pprint import pprint
+from urllib.parse import urlsplit
+from urllib.parse import unquote
+
 
 import requests
 from pathvalidate import sanitize_filename
@@ -31,14 +34,17 @@ def find_mileage(soup):
 
 
 def find_engine(soup):
-    capacity, fuel = find_capacity(soup), find_fuel(soup)
-    if fuel == 'электро':
-        capacity = None
-    engine = {
-        'capacity': capacity,
-        'fuel': fuel
-    }
-    return engine
+    try:
+        capacity, fuel = find_capacity(soup), find_fuel(soup)
+        if fuel == 'электро':
+            capacity = None
+        engine = {
+            'capacity': capacity,
+            'fuel': fuel
+        }
+        return engine
+    except IndexError:
+        return None
 
 
 def find_fuel(soup):
@@ -70,12 +76,15 @@ def find_wheel_drive(soup):
 
 
 def find_transmission(soup):
-    text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text
-    if text[-1] == ',':
-        return soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text[:-1]
-    if text not in ['АКПП', 'автомат', 'механика', 'робот', 'вариатор']:
+    try:
+        text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text
+        if text[-1] == ',':
+            return soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text[:-1]
+        if text not in ['АКПП', 'автомат', 'механика', 'робот', 'вариатор']:
+            return None
+        return text
+    except IndexError:
         return None
-    return text
 
 
 def find_power(soup):
@@ -140,7 +149,8 @@ def get_car(soup):
         'wheel_drive': find_wheel_drive(soup),
         'engine': find_engine(soup),
         'mileage': find_mileage(soup),
-        'drom_url': soup['href']
+        'drom_url': soup['href'],
+        'img_path': None
     }
     return car
 
@@ -157,6 +167,15 @@ def parse_brand_cars(brand, page_count):
             cars = cars + find_cars(soup)
         except requests.exceptions.HTTPError:
             print(f'Не существует такой ссылки - {url}')
+    return cars
+
+
+def download_car_images(cars, brand):
+    for car in cars:
+        url_path = urlsplit(car['img_url']).path
+        filename = unquote(split(url_path)[-1])
+        folder = 'media\\' + brand
+        car['img_path'] = download_image(car['img_url'], filename, folder)
     return cars
 
 
@@ -203,6 +222,7 @@ def save_json(brands, filename, folder=''):
 def save_image(content, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
+    print(filename, folder)
     filepath = join(folder, correct_img_filename(filename))
     with open(filepath, 'wb') as file:
         file.write(content)
@@ -251,10 +271,11 @@ def parse_car_brands(brand_names):
 
 
 def main():
-    pass
+    save_json(parse_car_brands(BRAND_NAMES), 'brands', 'brands')
 
 
 if __name__ == '__main__':
     for brand in BRAND_NAMES:
-        save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
-    # TODO: Сделать чтобы файл с брендами сохрансся в папке brands
+        cars = parse_brand_cars(brand, 3)
+        cars = download_car_images(cars, brand)
+        save_json(cars, f'{brand}_car', f'brands/{brand}')
