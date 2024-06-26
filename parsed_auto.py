@@ -21,6 +21,8 @@ def check_for_redirect(response):
 def find_mileage(soup):
     try:
         text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[-1].text
+        if text[-2:] != 'км':
+            return None
         text = text[:-3]
         text = int(text.replace(' ', ''))
         return text
@@ -29,9 +31,12 @@ def find_mileage(soup):
 
 
 def find_engine(soup):
+    capacity, fuel = find_capacity(soup), find_fuel(soup)
+    if fuel == 'электро':
+        capacity = None
     engine = {
-        'capacity': find_capacity(soup),
-        'fuel': find_fuel(soup)
+        'capacity': capacity,
+        'fuel': fuel
     }
     return engine
 
@@ -56,10 +61,11 @@ def find_wheel_drive(soup):
     try:
         text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text
         if text[-1] == ',':
-            return soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text[:-1]
+            text = text[:-1]
+        if text not in ['задний', '4WD', 'передний']:
+            return None
         return text
     except IndexError:
-        print(soup.prettify())
         return None
 
 
@@ -67,6 +73,8 @@ def find_transmission(soup):
     text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text
     if text[-1] == ',':
         return soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text[:-1]
+    if text not in ['АКПП', 'автомат', 'механика', 'робот', 'вариатор']:
+        return None
     return text
 
 
@@ -111,7 +119,6 @@ def find_model(soup):
         text = soup.select_one('[class="css-16kqa8y e3f4v4l2"]').text
         return text.split(',')[0]
     except AttributeError:
-        print(soup.prettify())
         return None
 
 
@@ -248,10 +255,6 @@ def main():
 
 
 if __name__ == '__main__':
-    # for brand in BRAND_NAMES:
-    #     save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
-    a = []
-    for car in parse_brand_cars('bmw', 10):
-        if car['wheel_drive'] not in a:
-            a.append(car['wheel_drive'])
-    print(a)
+    for brand in BRAND_NAMES:
+        save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
+    # TODO: Сделать чтобы файл с брендами сохрансся в папке brands
