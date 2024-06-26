@@ -53,6 +53,7 @@ a {
     align-items: center;
     text-align: center;
     height: 100vh;
+    position: relative;
 }
 
 .header::before {
@@ -60,7 +61,6 @@ a {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
@@ -294,4 +294,349 @@ a {
 
 .previous {
     transform: rotate(180deg);
+}
+
+.pagination {
+    padding: 20px 0;
+}
+
+.pagination .page-item {
+    margin: 0 10px;
+}
+
+.pagination .page-item .page-link {
+    color: #007bff;
+    border: none;
+    background-color: transparent;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #e9ecef;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    cursor: default;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+}
+
+.pagination .page-item.disabled .page-link:hover {
+    background-color: transparent;
+}
+
+.pagination .arrow {
+    display: block;
+    margin: auto;
+}
+
+.pagination .arrow.previous {
+    transform: rotate(180deg);
+}
+
+.pagination .arrow.disabled {
+    opacity: 0.5;
+}
+
+
+/* footer */
+
+.footer {
+    background-color: #f8f9fa;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.footer_section_title {
+    display: flex;
+    align-items: center;
+}
+
+.footer_section_title img {
+    position: relative;
+    top: -5px;
+}
+
+.footer_logo {
+    height: 35px;
+    margin-right: 10px;
+}
+
+.footer_logo.drom {
+    height: 30px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.footer .form-outline {
+    margin-bottom: 15px;
+}
+
+.footer .form-control {
+    border-radius: 0;
+}
+
+.footer .btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    width: 100%;
+    border-radius: 0;
+}
+
+.footer .btn:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.footer .text-uppercase {
+    font-size: 14px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.footer .text-muted {
+    color: #6c757d;
+}
+
+.footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .header h1 {
+        font-size: 3.5em;
+    }
+
+    .header h2 {
+        font-size: 2.5em;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .brand-card {
+        margin-bottom: 20px;
+    }
+
+    .brand-card img {
+        width: 35px;
+        height: 25px;
+    }
+
+    .brand-link {
+        width: 160px;
+        height: 50px;
+        padding: 8px;
+    }
+
+    .contacts-link {
+        font-size: 1.2em;
+    }
+
+    .car-card {
+        width: 100%;
+    }
+
+    .card-image {
+        height: 200px;
+        width: 100%;
+    }
+
+    .car-details h5 {
+        font-size: 1.15rem;
+    }
+
+    .car-card .car-price {
+        font-size: 0.9rem;
+    }
+
+    .show-more a {
+        padding: 12px 15px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .title {
+        font-size: 1.5em;
+    }
+
+    .ad-car-name {
+        font-size: 1.8em;
+        margin: 50px;
+    }
+
+    .card-article {
+        margin-bottom: 20px;
+    }
+
+    .card-image {
+        height: 200px;
+        width: 100%;
+    }
+
+    .car-details h5 {
+        font-size: 1.1rem;
+    }
+
+    .car-price {
+        font-size: 0.9rem;
+    }
+
+    .show-more a {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .title {
+        font-size: 1.2em;
+    }
+
+    .ad-car-name {
+        font-size: 1.5em;
+        margin: 30px;
+    }
+
+    .card-article {
+        margin-bottom: 15px;
+    }
+
+    .card-image {
+        height: 150px;
+        width: 100%;
+    }
+
+    .car-details h5 {
+        font-size: 1rem;
+    }
+
+    .car-price {
+        font-size: 0.8rem;
+    }
+
+    .show-more a {
+        padding: 10px 12px;
+    }
+}
+
+
+@media (max-width: 1200px) {
+    .header h1 {
+        font-size: 4.0em;
+    }
+
+    .header h2 {
+        font-size: 2.8em;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contacts-link {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 3.5em;
+    }
+
+    .header h2 {
+        font-size: 2.2em;
+    }
+
+    .brand-link {
+        width: 160px;
+        height: 50px;
+    }
+
+    .brand-card img {
+        width: 40px;
+        height: 25px;
+    }
+
+    .contacts-link {
+        font-size: 1.0em;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header h1 {
+        font-size: 2.5em;
+    }
+
+    .header h2 {
+        font-size: 1.8em;
+    }
+
+    .brand-link {
+        width: 140px;
+        height: 45px;
+    }
+
+    .brand-card img {
+        width: 35px;
+        height: 20px;
+    }
+
+    .contacts-link {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 400px) {
+    .header h1 {
+        font-size: 2.0em;
+    }
+
+    .header h2 {
+        font-size: 1.5em;
+    }
+
+    .brand-link {
+        width: 120px;
+        height: 40px;
+    }
+
+    .brand-card img {
+        width: 30px;
+        height: 18px;
+    }
+
+    .contacts-link {
+        font-size: 0.7em;
+    }
 }
