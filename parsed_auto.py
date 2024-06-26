@@ -1,8 +1,11 @@
 import time
 import json
 import os
+from os.path import split
 from os.path import join
-from pprint import pprint
+from urllib.parse import urlsplit
+from urllib.parse import unquote
+
 
 import requests
 from pathvalidate import sanitize_filename
@@ -21,6 +24,8 @@ def check_for_redirect(response):
 def find_mileage(soup):
     try:
         text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[-1].text
+        if text[-2:] != 'км':
+            return None
         text = text[:-3]
         text = int(text.replace(' ', ''))
         return text
@@ -29,11 +34,17 @@ def find_mileage(soup):
 
 
 def find_engine(soup):
-    engine = {
-        'capacity': find_capacity(soup),
-        'fuel': find_fuel(soup)
-    }
-    return engine
+    try:
+        capacity, fuel = find_capacity(soup), find_fuel(soup)
+        if fuel == 'электро':
+            capacity = None
+        engine = {
+            'capacity': capacity,
+            'fuel': fuel
+        }
+        return engine
+    except IndexError:
+        return None
 
 
 def find_fuel(soup):
@@ -53,17 +64,27 @@ def find_capacity(soup):
 
 
 def find_wheel_drive(soup):
-    text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text
-    if text[-1] == ',':
-        return soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text[:-1]
-    return text
+    try:
+        text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[3].text
+        if text[-1] == ',':
+            text = text[:-1]
+        if text not in ['задний', '4WD', 'передний']:
+            return None
+        return text
+    except IndexError:
+        return None
 
 
 def find_transmission(soup):
-    text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text
-    if text[-1] == ',':
-        return soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text[:-1]
-    return text
+    try:
+        text = soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text
+        if text[-1] == ',':
+            return soup.select('[class="css-1l9tp44 e162wx9x0"]')[2].text[:-1]
+        if text not in ['АКПП', 'автомат', 'механика', 'робот', 'вариатор']:
+            return None
+        return text
+    except IndexError:
+        return None
 
 
 def find_power(soup):
@@ -97,18 +118,23 @@ def find_price(soup):
 
 def find_img_url(soup):
     text = soup.select_one('[class="css-1jfqfiu e1e9ee560"]')
+    if not text:
+        return None
     return text.find('img')['src']
 
 
 def find_model(soup):
-    text = soup.select_one('[class="css-16kqa8y e3f4v4l2"]').text
-    return text.split(',')[0]
+    try:
+        text = soup.select_one('[class="css-16kqa8y e3f4v4l2"]').text
+        return text.split(',')[0]
+    except AttributeError:
+        return None
 
 
 def make_url(page, brand):
-    url = f'https://auto.drom.ru/{brand}/all/page{page}/?ph=1&unsold=1'
+    url = f'https://auto.drom.ru/{brand}/all/page{page}/?'
     if page == 1:
-        url = f'https://auto.drom.ru/{brand}/all/?ph=1&unsold=1'
+        url = f'https://auto.drom.ru/{brand}/all/?'
     return url
 
 
@@ -123,7 +149,8 @@ def get_car(soup):
         'wheel_drive': find_wheel_drive(soup),
         'engine': find_engine(soup),
         'mileage': find_mileage(soup),
-        'drom_url': soup['href']
+        'drom_url': soup['href'],
+        'img_path': None
     }
     return car
 
@@ -131,14 +158,24 @@ def get_car(soup):
 def parse_brand_cars(brand, page_count):
     """Возвращает список автомобилей определенного бренда"""
     cars = []
+    params = {'ph': 1, 'unsold': 1}
     for page in range(1, page_count+1):
         try:
             url = make_url(page, brand)
-            response = get_response(url)
+            response = get_response(url, params=params)
             soup = BeautifulSoup(response.content, 'lxml')
             cars = cars + find_cars(soup)
         except requests.exceptions.HTTPError:
-            print('Не существует такой ссылки')
+            print(f'Не существует такой ссылки - {url}')
+    return cars
+
+
+def download_car_images(cars, brand):
+    for car in cars:
+        url_path = urlsplit(car['img_url']).path
+        filename = unquote(split(url_path)[-1])
+        folder = 'media\\' + brand
+        car['img_path'] = download_image(car['img_url'], filename, folder)
     return cars
 
 
@@ -150,10 +187,10 @@ def find_cars(page_soup):
     return cars
 
 
-def get_response(url):
+def get_response(url, params={}):
     while True:
         try:
-            response = requests.get(url)
+            response = requests.get(url, params=params)
             response.raise_for_status()
             check_for_redirect(response)
             return response
@@ -162,18 +199,44 @@ def get_response(url):
             time.sleep(5)
 
 
-def correct_filename(filename):
+def correct_json_filename(filename):
     if filename[-5:] != '.json':
         filename = filename + '.json'
+    return sanitize_filename(filename)
+
+
+def correct_img_filename(filename):
+    if filename[-4:] != '.jpg':
+        filename = filename + '.jpg'
     return sanitize_filename(filename)
 
 
 def save_json(brands, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    filepath = join(folder, correct_filename(filename))
+    filepath = join(folder, correct_json_filename(filename))
     with open(filepath, 'w', encoding='utf8') as file:
         json.dump(brands, file, ensure_ascii=False)
+
+
+def save_image(content, filename, folder=''):
+    if folder:
+        os.makedirs(folder, exist_ok=True)
+    print(filename, folder)
+    filepath = join(folder, correct_img_filename(filename))
+    with open(filepath, 'wb') as file:
+        file.write(content)
+    return filepath
+
+
+def download_image(url, filename, folder=''):
+    """Скачивает изображение и сохраняет по указанному пути"""
+    try:
+        response = get_response(url)
+        return save_image(response.content, filename, folder)
+    except requests.exceptions.HTTPError:
+        print(f'Не существует такой ссылки - {url}')
+        return None
 
 
 def lower_list(data):
@@ -204,13 +267,15 @@ def parse_car_brands(brand_names):
         soup = BeautifulSoup(response.content, 'lxml')
         return find_car_brands(soup, brand_names)
     except requests.exceptions.HTTPError:
-        print('Не существует такой ссылки.')
+        print(f'Не существует такой ссылки - {url}')
 
 
 def main():
-    pass
+    save_json(parse_car_brands(BRAND_NAMES), 'brands', 'brands')
 
 
 if __name__ == '__main__':
     for brand in BRAND_NAMES:
-        save_json(parse_brand_cars(brand, 3), f'{brand}_car', f'brands/{brand}')
+        cars = parse_brand_cars(brand, 3)
+        cars = download_car_images(cars, brand)
+        save_json(cars, f'{brand}_car', f'brands/{brand}')
