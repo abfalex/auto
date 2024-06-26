@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./../../assets/styles/main.css">
 	<link rel="stylesheet" href="./../../assets/styles/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="shortcut icon" href="./../../assets/images/favicon.png" type="image/x-icon">
 	<title>{% block title %}{% endblock %}</title>
 </head>
@@ -14,8 +15,7 @@
 	<header class="header">
 		<div class="navbar">
 			<div class="logo">
-				<a href="./../../index.html"><img src="./../../assets/images/favicon.png" alt="logo"
-						class="img-fluid"></a>
+				<a href="./../../index.html"><img src="./../../assets/images/favicon.png" alt="logo" class="img-fluid"></a>
 			</div>
 			<nav class="nav-list">
 				<div class="container">
@@ -49,22 +49,72 @@
 	{% block main %}
 	{% endblock %}
 
-	<footer class="footer-container text-center text-lg-start bg-body-tertiary text-muted">
-		<section>
-			<div class="container text-center text-md-start mt-5">
-				<div class="row mt-3">
-					<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-						<h6 class="text-uppercase fw-bold mb-4" id="contacts">Контакты</h6>
-						<p>auto@example.com</p>
-						<p>+7 904 000 00-00</p>
+	<footer class="text-center text-lg-start bg-body-tertiary text-muted">
+		<div class="container text-center text-md-start mt-5">
+			<div class="row mt-3">
+				<div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+					<div class="footer_section_title d-flex align-items-center">
+						<img class="footer_logo me-2" src="./../../assets/images/3place_logo.png" alt="3place logo">
+						<h6 class="text-uppercase fw-bold mb-3">
+							Третье место
+						</h6>
 					</div>
+					<p>
+						Данный проект реализован для школы «Третье место» в обучающих целях
+					</p>
+				</div>
+
+				<div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+					<div class="footer_section_title d-flex align-items-center">
+						<img class="footer_logo drom me-2" src="./../../assets/images/drom_logo.png" alt="Drom logo">
+						<h6 class="text-uppercase fw-bold mb-3">
+							Дром
+						</h6>
+					</div>
+					<p>
+						Информация о марках и машинах взята с официального сайта <a target="_blank"
+							href="https://drom.ru/">drom.ru</a>
+					</p>
+				</div>
+
+				<div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+					<p class="text-uppercase fw-bold mb-3">Подпишись на наши новости</p>
+					<form action="#" class="email d-flex flex-wrap justify-content-center">
+						<div class="col-12 mb-2">
+							<div class="form-outline">
+								<input type="email" class="form-control" placeholder="Электронная почта">
+							</div>
+						</div>
+						<div class="col-12">
+							<button type="button" class="btn btn-primary w-100">
+								Подписаться
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+					<p class="text-uppercase fw-bold mb-3" id="contacts">Контакты</p>
+					<p>
+						<i class="fa fa-envelope me-2"></i>
+						auto@gmail.com
+					</p>
+					<p>
+						<i class="fa fa-phone me-2"></i>
+						+7 904 000 00-00
+					</p>
 				</div>
 			</div>
-		</section>
-		<div class="text-center p-4">
-			&copy; 2024 Auto
+		</div>
+
+		<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+			© 2024
 		</div>
 	</footer>
+
+
+	<script>
+	</script>
 </body>
 
 </html>
