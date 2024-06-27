@@ -360,6 +360,12 @@ a {
     padding-bottom: 20px;
 }
 
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .footer_section_title {
     display: flex;
     align-items: center;
@@ -423,7 +429,21 @@ a {
     text-decoration: underline;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+        margin-bottom: 20px;
+    }
+}
+
+
+@media (min-width: 768px) and (max-width: 1200px) {
     .header h1 {
         font-size: 3.5em;
     }
