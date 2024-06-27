@@ -1,64 +1,166 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
 
-body {
-    background-color: #111;
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
     color: #fff;
+}
+
+html::-webkit-scrollbar {
+    width: 10px;
+}
+
+html::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+}
+
+html::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+    background-color: #525252;
+    border: 0px none #fff;
+    border-radius: 50px;
+}
+
+
+html::-webkit-scrollbar-track {
+    background-color: #272727;
+    border: 0px dashed #fff;
 }
 
 a {
     text-decoration: none;
-    color: rgb(183, 183, 183);
+    color: rgba(183, 183, 183);
+    transition: color 0.3s, background-color 0.3s;
 }
 
-.container {
-    font-family: "Roboto", sans-serif;
-    max-width: 800px;
-}
+/* header container */
 
 .header {
-    font-family: "Roboto Slab", serif;
-    background: url('../images/background.jpg') no-repeat center center;
+    font-family: "Kanit", sans-serif;
+    background: url('../images/background.png') no-repeat center center;
     background-size: cover;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-}
-
-.header h1 {
-    font-size: 4.5rem;
-    font-weight: 500;
-    color: #b7ff00
-}
-
-.header p {
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: #dedede;
-}
-
-.header p,
-.header h1 {
+    height: 100vh;
     position: relative;
-    top: -60px;
 }
 
-.card {
-    background-color: #222;
-    border: none;
-    margin-bottom: 20px;
-    transition: transform 0.2s, color 0.2s;
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
-.card:hover .card-title {
-    color: #f75c6e;
+.navbar {
+    display: flex;
+    width: 90%;
 }
 
-.card:hover {
-    transform: scale(1.05);
+.logo {
+    margin-top: 20px;
+}
+
+.logo img {
+    height: 76px;
+}
+
+.brand-link {
+    font-family: 'Roboto', sans-serif;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 15px;
+    border-radius: 12px;
+    padding: 10px;
+    width: 190px;
+    height: 60px;
+    background-color: rgba(20%, 20%, 20%, 0.8);
+}
+
+.brand-card img {
+    width: 45px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.brand-card a {
+    text-decoration: none;
+    color: #ddd;
+}
+
+.brand-card a:hover {
+    background-color: #7bff0086;
+    color: #2e2e2e;
+}
+
+.contacts-link {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.5em;
+    background-color: rgba(20%, 20%, 20%, 0.2);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.header h1 {
+    font-size: 5.0em;
+    margin-bottom: 0.2em;
+    letter-spacing: 3px;
+    color: #b7ff00;
+    z-index: 2;
+}
+
+.header h2 {
+    font-size: 3.5em;
+    margin-bottom: 1em;
+    color: #dedede;
+    z-index: 2;
+}
+
+.header h1,
+.header h2 {
+    font-family: "Rubik Mono One", serif;
+    z-index: 2;
+}
+
+/* main container */
+
+.main-container {
+    color: #2e2e2e;
+}
+
+.show-more {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.title {
+    margin-top: 30px;
+}
+
+.ad-car-name {
+    margin: 100px;
+    font-size: 50px;
 }
 
 .card-body {
@@ -66,9 +168,8 @@ a {
     align-items: center;
 }
 
-.card img {
-    max-height: 200px;
-    object-fit: contain;
+.card-articles {
+    margin-bottom: 50px;
 }
 
 .card-title {
@@ -82,30 +183,82 @@ a {
 
 .car-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 20px;
+    width: 30em;
     transition: transform 0.2s, color 0.2s;
+    background-color: #dde;
+    block-size: border-box;
 }
 
-.car-card img {
-    width: 150px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 15px;
+.car-card a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .car-details {
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
 }
 
-.car-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #333;
+.car-description {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    position: relative;
+    top: -20px;
+    left: 10px;
+    width: 100%;
+}
+
+.card-article {
+    display: flex;
+    justify-content: center;
+}
+
+.card-image {
+    height: 269px;
+    width: 30em;
+}
+
+.car-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px 8px 0 0;
+}
+
+.car-details h5 {
+    margin: 0;
+    position: relative;
+    top: -30px;
+    left: 15px;
+    font-size: 1.35rem;
+}
+
+.car-card .car-price {
+    display: inline-block;
+    font-size: 1.03rem;
+    font-weight: 500;
+    background-color: #db001a;
+    color: #fff;
+    position: relative;
+    top: -45px;
+    left: 10px;
+    padding: 1px 10px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.car-link {
+    position: relative;
+    left: -80px;
 }
 
 .car-card:hover h5 {
@@ -114,4 +267,396 @@ a {
 
 .car-card:hover {
     transform: scale(1.05);
+}
+
+.show-more {
+    display: flex;
+    justify-content: center;
+}
+
+.show-more a {
+    text-decoration: none;
+    padding: 15px 20px;
+    background-color: #2e2e2e;
+    color: rgb(211, 209, 209);
+    border-radius: 10px;
+    font-weight: 500;
+    transition: transform 0.3s;
+}
+
+.show-more a:hover {
+    transform: scale(1.05);
+}
+
+.enabled {
+    color: #1a76cb;
+}
+
+.previous {
+    transform: rotate(180deg);
+}
+
+.pagination {
+    padding: 20px 0;
+}
+
+.pagination .page-item {
+    margin: 0 10px;
+}
+
+.pagination .page-item .page-link {
+    color: #007bff;
+    border: none;
+    background-color: transparent;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #e9ecef;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    cursor: default;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+}
+
+.pagination .page-item.disabled .page-link:hover {
+    background-color: transparent;
+}
+
+.pagination .arrow {
+    display: block;
+    margin: auto;
+}
+
+.pagination .arrow.previous {
+    transform: rotate(180deg);
+}
+
+.pagination .arrow.disabled {
+    opacity: 0.5;
+}
+
+
+/* footer */
+
+.footer {
+    background-color: #f8f9fa;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer_section_title {
+    display: flex;
+    align-items: center;
+}
+
+.footer_section_title img {
+    position: relative;
+    top: -5px;
+}
+
+.footer_logo {
+    height: 35px;
+    margin-right: 10px;
+}
+
+.footer_logo.drom {
+    height: 30px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.footer .form-outline {
+    margin-bottom: 15px;
+}
+
+.footer .form-control {
+    border-radius: 0;
+}
+
+.footer .btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    width: 100%;
+    border-radius: 0;
+}
+
+.footer .btn:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.footer .text-uppercase {
+    font-size: 14px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.footer .text-muted {
+    color: #6c757d;
+}
+
+.footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+        margin-bottom: 20px;
+    }
+}
+
+
+@media (min-width: 768px) and (max-width: 1200px) {
+    .header h1 {
+        font-size: 3.5em;
+    }
+
+    .header h2 {
+        font-size: 2.5em;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .brand-card {
+        margin-bottom: 20px;
+    }
+
+    .brand-card img {
+        width: 35px;
+        height: 25px;
+    }
+
+    .brand-link {
+        width: 160px;
+        height: 50px;
+        padding: 8px;
+    }
+
+    .contacts-link {
+        font-size: 1.2em;
+    }
+
+    .car-card {
+        width: 100%;
+    }
+
+    .card-image {
+        height: 200px;
+        width: 100%;
+    }
+
+    .car-details h5 {
+        font-size: 1.15rem;
+    }
+
+    .car-card .car-price {
+        font-size: 0.9rem;
+    }
+
+    .show-more a {
+        padding: 12px 15px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .title {
+        font-size: 1.5em;
+    }
+
+    .ad-car-name {
+        font-size: 1.8em;
+        margin: 50px;
+    }
+
+    .card-article {
+        margin-bottom: 20px;
+    }
+
+    .card-image {
+        height: 200px;
+        width: 100%;
+    }
+
+    .car-details h5 {
+        font-size: 1.1rem;
+    }
+
+    .car-price {
+        font-size: 0.9rem;
+    }
+
+    .show-more a {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .title {
+        font-size: 1.2em;
+    }
+
+    .ad-car-name {
+        font-size: 1.5em;
+        margin: 30px;
+    }
+
+    .card-article {
+        margin-bottom: 15px;
+    }
+
+    .card-image {
+        height: 150px;
+        width: 100%;
+    }
+
+    .car-details h5 {
+        font-size: 1rem;
+    }
+
+    .car-price {
+        font-size: 0.8rem;
+    }
+
+    .show-more a {
+        padding: 10px 12px;
+    }
+}
+
+
+@media (max-width: 1200px) {
+    .header h1 {
+        font-size: 4.0em;
+    }
+
+    .header h2 {
+        font-size: 2.8em;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contacts-link {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 3.5em;
+    }
+
+    .header h2 {
+        font-size: 2.2em;
+    }
+
+    .brand-link {
+        width: 160px;
+        height: 50px;
+    }
+
+    .brand-card img {
+        width: 40px;
+        height: 25px;
+    }
+
+    .contacts-link {
+        font-size: 1.0em;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header h1 {
+        font-size: 2.5em;
+    }
+
+    .header h2 {
+        font-size: 1.8em;
+    }
+
+    .brand-link {
+        width: 140px;
+        height: 45px;
+    }
+
+    .brand-card img {
+        width: 35px;
+        height: 20px;
+    }
+
+    .contacts-link {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 400px) {
+    .header h1 {
+        font-size: 2.0em;
+    }
+
+    .header h2 {
+        font-size: 1.5em;
+    }
+
+    .brand-link {
+        width: 120px;
+        height: 40px;
+    }
+
+    .brand-card img {
+        width: 30px;
+        height: 18px;
+    }
+
+    .contacts-link {
+        font-size: 0.7em;
+    }
 }
