@@ -1,6 +1,5 @@
 import json
 import os
-import pprint
 from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
@@ -21,7 +20,7 @@ def on_reload():
     page_template = env.get_template("page_template.html")
     pages_folder = "pages"
 
-    with open("brands.json", "r", encoding="UTF-8") as f:
+    with open("brands/brands.json", "r", encoding="UTF-8") as f:
         brands = json.load(f)
 
     cars_on_page = 20
