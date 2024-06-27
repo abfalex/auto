@@ -1,19 +1,38 @@
 import time
 import json
 import os
+import argparse
 from os.path import split
 from os.path import join
 from urllib.parse import urlsplit
 from urllib.parse import unquote
 
-
 import requests
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-FILENAME = 'brands.json'
-BRAND_NAMES = ['bmw', 'lexus', 'ford', 'mazda', 'chevrolet', 'mercedes-benz']
+BRANDS_FILENAME = os.getenv('BRANDS_FILENAME', default='brands.json')
+BRANDS_FOLDER = os.getenv('BRANDS_FOLDER', default='brands\\')
+CAR_IMG_FOLDER = os.getenv('CAR_IMG_FOLDER', default='media\\')
+PAGE_COUNT = os.getenv('PAGE_COUNT')
+BRAND_NAMES = os.getenv('BRAND_NAMES')
+
+
+def get_arg():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--page_count', type=int, default=3,
+                        help='Количество страниц с авто, у одного бренда.')
+    return parser.parse_args()
+
+
+def get_page_count():
+    if os.getenv('PAGE_COUNT'):
+        return os.getenv('PAGE_COUNT')
+    return get_arg().page_count
 
 
 def check_for_redirect(response):
@@ -159,7 +178,7 @@ def parse_brand_cars(brand, page_count):
     """Возвращает список автомобилей определенного бренда"""
     cars = []
     params = {'ph': 1, 'unsold': 1}
-    for page in range(1, page_count+1):
+    for page in range(1, int(page_count)+1):
         try:
             url = make_url(page, brand)
             response = get_response(url, params=params)
@@ -170,12 +189,15 @@ def parse_brand_cars(brand, page_count):
     return cars
 
 
-def download_car_images(cars, brand):
+def download_car_images(cars, brand, folder):
+    result_folder = join(folder, brand)
     for car in cars:
         url_path = urlsplit(car['img_url']).path
         filename = unquote(split(url_path)[-1])
-        folder = 'media\\' + brand
-        car['img_path'] = download_image(car['img_url'], filename, folder)
+        car['img_path'] = download_image(car['img_url'],
+                                         filename,
+                                         result_folder
+                                         )
     return cars
 
 
@@ -222,7 +244,6 @@ def save_json(brands, filename, folder=''):
 def save_image(content, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    print(filename, folder)
     filepath = join(folder, correct_img_filename(filename))
     with open(filepath, 'wb') as file:
         file.write(content)
@@ -270,12 +291,21 @@ def parse_car_brands(brand_names):
         print(f'Не существует такой ссылки - {url}')
 
 
+def get_brand_names():
+    if BRAND_NAMES:
+        return BRAND_NAMES.split(',')
+    return ['bmw', 'lexus', 'ford', 'mazda', 'chevrolet', 'mercedes-benz']
+
+
 def main():
-    save_json(parse_car_brands(BRAND_NAMES), 'brands', 'brands')
+    page_count = get_page_count()
+    brand_names = get_brand_names()
+    save_json(parse_car_brands(brand_names), BRANDS_FILENAME, BRANDS_FOLDER)
+    for brand in brand_names:
+        cars = parse_brand_cars(brand, page_count)
+        cars = download_car_images(cars, brand, CAR_IMG_FOLDER)
+        save_json(cars, f'{brand}_cars', join(BRANDS_FOLDER, brand))
 
 
 if __name__ == '__main__':
-    for brand in BRAND_NAMES:
-        cars = parse_brand_cars(brand, 3)
-        cars = download_car_images(cars, brand)
-        save_json(cars, f'{brand}_car', f'brands/{brand}')
+    main()
