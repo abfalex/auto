@@ -17,7 +17,7 @@ load_dotenv()
 
 BRANDS_FILENAME = os.getenv('BRANDS_FILENAME', default='brands.json')
 BRANDS_FOLDER = os.getenv('BRANDS_FOLDER', default='brands\\')
-CARS_FOLDER = os.getenv('CARS_FOLDER', default='media\\')
+CAR_IMG_FOLDER = os.getenv('CAR_IMG_FOLDER', default='media\\')
 PAGE_COUNT = os.getenv('PAGE_COUNT')
 BRAND_NAMES = os.getenv('BRAND_NAMES')
 
@@ -303,7 +303,7 @@ def main():
     save_json(parse_car_brands(brand_names), BRANDS_FILENAME, BRANDS_FOLDER)
     for brand in brand_names:
         cars = parse_brand_cars(brand, page_count)
-        cars = download_car_images(cars, brand, CARS_FOLDER)
+        cars = download_car_images(cars, brand, CAR_IMG_FOLDER)
         save_json(cars, f'{brand}_cars', join(BRANDS_FOLDER, brand))
 
 
