@@ -3,44 +3,42 @@
 {% block title %} Выбор авто — Главная {% endblock title %}
 
 {% block main %}
-<main class="main-container">
-	<h2 class="text-center title">Поиск объявлений</h2>
-	{% for brand in brands %}
-	<section class="car-section mt-5 container">
-		<h2 class="ad-car-name text-center mb-4">{{ brand.brand_name }}</h2>
-		{% set brand_automobiles = automobiles[brand.brand_name] %}
-		{% for i in range(0, brand_automobiles|length, 2) %}
-		<div class="card-articles row">
-			{% for automobile in brand_automobiles[i:i+2] %}
-			<article class="card-article col-md-6">
-				<div class="car-card">
-					<a href="{{ automobile.drom_url }}" target="_blank" class="drom-link">
-						<div class="card-image">
-							<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
+<h2 class="text-center title">Поиск объявлений</h2>
+{% for brand in brands %}
+<section class="car-section mt-5 container">
+	<h2 class="ad-car-name text-center mb-4">{{ brand.brand_name }}</h2>
+	{% set brand_automobiles = automobiles[brand.brand_name] %}
+	{% for i in range(0, brand_automobiles|length, 2) %}
+	<div class="card-articles row">
+		{% for automobile in brand_automobiles[i:i+2] %}
+		<article class="card-article col-md-6">
+			<div class="car-card">
+				<a href="{{ automobile.drom_url }}" target="_blank" class="drom-link">
+					<div class="card-image">
+						<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
+					</div>
+					<div class="car-details">
+						<p class="car-price">{{ automobile.price|format_price }} ₽</p>
+						<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
+						<div class="car-description">
+							<span class="description-item">{{ automobile.engine.fuel }}, </span>
+							<span class="description-item">{{ automobile.engine.capacity }} л, </span>
+							<span class="description-item">{{ automobile.power }} л.с., </span>
+							<span class="description-item">{{ automobile.transmission }}, </span>
+							<span class="description-item">{{ automobile.wheel_drive }}{% if
+								automobile.mileage %}, </span>
+							<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
 						</div>
-						<div class="car-details">
-							<p class="car-price">{{ automobile.price|format_price }} ₽</p>
-							<h5>{{ automobile.model }}, {{ automobile.year }}</h5>
-							<div class="car-description">
-								<span class="description-item">{{ automobile.engine.fuel }}, </span>
-								<span class="description-item">{{ automobile.engine.capacity }} л, </span>
-								<span class="description-item">{{ automobile.power }} л.с., </span>
-								<span class="description-item">{{ automobile.transmission }}, </span>
-								<span class="description-item">{{ automobile.wheel_drive }}{% if
-									automobile.mileage %}, </span>
-								<span class="description-item">{{automobile.mileage }} км{%endif %}</span>
-							</div>
-						</div>
-					</a>
-				</div>
-			</article>
-			{% endfor %}
-		</div>
+					</div>
+				</a>
+			</div>
+		</article>
 		{% endfor %}
-		<div class="show-more">
-			<a class="show-more-link" href="./pages/{{ brand.brand_name }}/page1.html#ads">Показать еще</a>
-		</div>
-	</section>
+	</div>
 	{% endfor %}
-</main>
+	<div class="show-more">
+		<a class="show-more-link" href="./pages/{{ brand.brand_name }}/page1.html#ads">Показать еще</a>
+	</div>
+</section>
+{% endfor %}
 {% endblock main %}
