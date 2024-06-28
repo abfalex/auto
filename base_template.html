@@ -10,33 +10,8 @@
 
 <body>
 	<header class="header">
-		<div class="navbar">
-			<div class="logo">
-				<a href="./../../index.html"><img src="./../../assets/images/favicon.png" alt="logo"
-						class="img-fluid"></a>
-			</div>
-			<nav class="nav-list">
-				<div class="container">
-					{% for i in range(0, brands|length, 3) %}
-					<div class="row">
-						{% for brand in brands[i:i+3] %}
-						<div class="brand-card col-md-4 mb-3">
-							<a class="brand-link" href="./../../pages/{{ brand.brand_name }}/page1.html">
-								<div class="brand-image">
-									<img src="{{ brand.image_url }}" alt="Logo {{ brand.brand_name }}">
-								</div>
-								<div class="brand-name">
-									{{ brand.brand_name }}
-								</div>
-							</a>
-						</div>
-						{% endfor %}
-					</div>
-					{% endfor %}
-				</div>
-			</nav>
-			<a href="#contacts" class="contacts-link">Контакты</a>
-		</div>
+		{% block navbar %}
+		{% endblock navbar %}
 		<div class="container d-flex flex-column justify-content-center align-items-center text-center text-white"
 			style="height: 100vh;">
 			<h1>МАШИНЫ</h1>
