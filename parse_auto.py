@@ -174,7 +174,7 @@ def get_car(soup):
     return car
 
 
-def parse_brand_cars(brand, page_count):
+def parse_brand_cars(brand, page_count, folder):
     """Возвращает список автомобилей определенного бренда"""
     cars = []
     params = {'ph': 1, 'unsold': 1}
@@ -186,7 +186,7 @@ def parse_brand_cars(brand, page_count):
             cars = cars + find_cars(soup)
         except requests.exceptions.HTTPError:
             print(f'Не существует такой ссылки - {url}')
-    return cars
+    return download_car_images(cars, brand, folder)
 
 
 def download_car_images(cars, brand, folder):
@@ -227,12 +227,6 @@ def correct_json_filename(filename):
     return sanitize_filename(filename)
 
 
-def correct_img_filename(filename):
-    if filename[-4:] != '.jpg':
-        filename = filename + '.jpg'
-    return sanitize_filename(filename)
-
-
 def save_json(brands, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
@@ -244,7 +238,7 @@ def save_json(brands, filename, folder=''):
 def save_image(content, filename, folder=''):
     if folder:
         os.makedirs(folder, exist_ok=True)
-    filepath = join(folder, correct_img_filename(filename))
+    filepath = join(folder, sanitize_filename(filename))
     with open(filepath, 'wb') as file:
         file.write(content)
     return filepath
@@ -274,19 +268,21 @@ def find_car_brands(soup, brand_names):
         if brand_name.lower() in lower_list(brand_names):
             brand = {
                 'brand_name': brand_name,
-                'image_url': image_url
+                'image_url': image_url,
+                'image_path': None
             }
             brands.append(brand)
     return brands
 
 
-def parse_car_brands(brand_names):
+def parse_car_brands(brand_names, folder):
     """Возвращает данные указанных брендов в виде списка"""
     url = 'https://auto.drom.ru/'
     try:
         response = get_response(url)
         soup = BeautifulSoup(response.content, 'lxml')
-        return find_car_brands(soup, brand_names)
+        brands = find_car_brands(soup, brand_names)
+        return download_brand_images(brands, folder)
     except requests.exceptions.HTTPError:
         print(f'Не существует такой ссылки - {url}')
 
@@ -297,13 +293,25 @@ def get_brand_names():
     return ['bmw', 'lexus', 'ford', 'mazda', 'chevrolet', 'mercedes-benz']
 
 
+def download_brand_images(brands, folder):
+    for brand in brands:
+        result_folder = join(folder, brand['brand_name'].lower())
+        url_path = urlsplit(brand['image_url']).path
+        filename = unquote(split(url_path)[-1])
+        brand['image_path'] = download_image(brand['image_url'],
+                                             filename,
+                                             result_folder
+                                             )
+    return brands
+
+
 def main():
     page_count = get_page_count()
     brand_names = get_brand_names()
-    save_json(parse_car_brands(brand_names), BRANDS_FILENAME, BRANDS_FOLDER)
+    brands = parse_car_brands(brand_names, CAR_IMG_FOLDER)
+    save_json(brands, BRANDS_FILENAME, BRANDS_FOLDER)
     for brand in brand_names:
-        cars = parse_brand_cars(brand, page_count)
-        cars = download_car_images(cars, brand, CAR_IMG_FOLDER)
+        cars = parse_brand_cars(brand, page_count, CAR_IMG_FOLDER)
         save_json(cars, f'{brand}_cars', join(BRANDS_FOLDER, brand))
 
 
