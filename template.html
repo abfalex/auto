@@ -51,7 +51,8 @@
 			<div class="car-card">
 				<a href="{{ automobile.drom_url }}" target="_blank" class="drom-link">
 					<div class="card-image">
-						<img src="{{ automobile.img_url }}" alt="Автомобиль {{ automobile.model }}" class="car-preview">
+						<img src="{{ automobile.img_path }}" alt="Автомобиль {{ automobile.model }}"
+							class="car-preview">
 					</div>
 					<div class="car-details">
 						<p class="car-price">{{ automobile.price|format_price }} ₽</p>
