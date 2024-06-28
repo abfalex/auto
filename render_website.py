@@ -3,6 +3,12 @@ import os
 from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BRANDS_FILENAME = os.getenv('BRANDS_FILENAME', default='brands.json')
+BRANDS_FOLDER = os.getenv('BRANDS_FOLDER', default='brands\\')
 
 
 def format_price(value):
@@ -20,7 +26,7 @@ def on_reload():
     page_template = env.get_template("page_template.html")
     pages_folder = "pages"
 
-    with open("brands/brands.json", "r", encoding="UTF-8") as f:
+    with open(os.path.join(BRANDS_FOLDER, BRANDS_FILENAME), "r", encoding="UTF-8") as f:
         brands = json.load(f)
 
     cars_on_page = 20
@@ -32,7 +38,7 @@ def on_reload():
 
         os.makedirs(brand_page_path, exist_ok=True)
 
-        brands_folder = os.path.join("brands")
+        brands_folder = os.path.join(BRANDS_FOLDER)
         brand_folder_path = os.path.join(brands_folder, brand_folder_name)
         for brand_file in os.listdir(brand_folder_path):
             with open(f"{brand_folder_path}/{brand_file}", "r", encoding="UTF-8") as f:
